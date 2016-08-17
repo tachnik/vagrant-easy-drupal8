@@ -84,3 +84,22 @@ fi
 # reload apache2
 echo "--> Restart apache2"
 service apache2 restart
+
+# install Drush
+echo "--> Installing drush..."
+# Create and/or navigate to a path for the single Composer Drush install.
+mkdir --parents /opt/drush-8.x
+cd /opt/drush-8.x
+# Initialise a new Composer project that requires Drush.
+composer init --require=drush/drush:8.* -n
+# Configure the path Composer should use for the Drush vendor binaries.
+composer config bin-dir /usr/local/bin
+# Install Drush.
+composer install
+
+
+# setup drupal
+rm -fdr /var/www/html
+ln -s /vagrant/drupal /var/www/html
+cd /var/www/html
+
