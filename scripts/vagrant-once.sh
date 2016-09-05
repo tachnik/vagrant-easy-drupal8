@@ -97,6 +97,8 @@ composer config bin-dir /usr/local/bin
 # Install Drush.
 composer install
 
+# Create a drupal dir if none exists
+mkdir -p /vagrant/drupal
 
 # setup drupal
 rm -fdr /var/www/html
