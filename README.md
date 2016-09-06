@@ -9,6 +9,8 @@ Install Virtualbox, NFS-server, Vagrant and the following plugins:
 vagrant plugin install vagrant-cachier
 # https://github.com/devopsgroup-io/vagrant-hostmanager
 vagrant plugin install vagrant-hostmanager
+# https://github.com/dotless-de/vagrant-vbguest
+vagrant plugin install vagrant-vbguest 
 ```
 
 If you run Windows, install the nfs-plugin:
