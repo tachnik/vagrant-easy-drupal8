@@ -69,10 +69,10 @@ if [ $? == 1 ]; then
     echo "[mysqld]" >> /etc/mysql/conf.d/bind_all.cnf
     echo "bind-address = 0.0.0.0" >> /etc/mysql/conf.d/bind_all.cnf
 # also add database and user for drupal
-    echo "CREATE USER 'drupal'@'localhost' IDENTIFIED BY 'abc123'" | mysql -uroot -prootpass
-    echo "CREATE DATABASE dbd8" | mysql -uroot -prootpass
-    echo "GRANT ALL ON dbd8.* TO 'drupal'@'localhost'" | mysql -uroot -prootpass
-    echo "flush privileges" | mysql -uroot -prootpass
+    echo "CREATE USER 'drupal'@'localhost' IDENTIFIED BY 'abc123'" | mysql -uroot -pabc123
+    echo "CREATE DATABASE dbd8" | mysql -uroot -pabc123
+    echo "GRANT ALL ON dbd8.* TO 'drupal'@'localhost'" | mysql -uroot -pabc123
+    echo "flush privileges" | mysql -uroot -pabc123
     service mysql restart
 fi
 
