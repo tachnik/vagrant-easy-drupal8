@@ -43,7 +43,7 @@ a2dismod autoindex
 sed -i 's/www-data/vagrant/' /etc/apache2/envvars
 
 # allow the .htaccess of drupal to override default urls
-sed -i '/AllowOverride None/c AllowOverride All' /etc/apache2/apache2.conf
+sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ /AllowOverride None/c AllowOverride All' /etc/apache2/apache2.conf
 
 # install composer
 if [ ! -f /usr/local/bin/composer ]; then
