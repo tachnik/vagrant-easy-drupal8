@@ -28,4 +28,4 @@ Drupal is installed in the directory `drupal` this is created in the git-root.
 
 You can browse to `http://drupal8.dev/` now.
 
-(FIXME Well, after the script is updated for installation anyway...)
+Login with `admin` and password `abc123` and begin to create!

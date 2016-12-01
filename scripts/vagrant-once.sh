@@ -106,16 +106,18 @@ composer config bin-dir /usr/local/bin
 # Install Drush.
 composer install
 
-# Create a drupal dir if none exists
-mkdir -p /vagrant/drupal
 
-# setup drupal
+# setup Drupal
+cd /vagrant
+# will download to directory "drupal"
+drush dl drupal --drupal-project-rename=drupal
+cd drupal
+drush site-install --db-url=mysql://drupal:abc123@localhost:3360/dbd8 --site-name=Drupal8 --account-pass=abc123 -y
+# allow apache2 to write here
+chmod 755 sites/default/settings.php
+chmod 777 sites/default/files
+
+# adjust symlink for apache2
 rm -fdr /var/www/html
 ln -s /vagrant/drupal /var/www/html
-cd /var/www/html
-drush dl drupal --drupal-project-rename=drupal8
-cd drupal8
-drush site-install --db-url=mysql://drupal:abc123@localhost:3360/dbd8 --site-name=Drupal8 --account-pass=abc123 -y
-chmod 755 settings.php
-chmod 777 files
 
