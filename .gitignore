@@ -1,2 +1,6 @@
-.idea
-.vagrant
+# metadata
+/.idea
+/.vagrant
+
+# ignore local drupal dir
+/drupal
