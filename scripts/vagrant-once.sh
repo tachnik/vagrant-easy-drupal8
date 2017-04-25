@@ -108,19 +108,21 @@ composer install
 
 
 # setup Drupal
-cd /vagrant
+cd /var/www/html/
 # will download to directory "tcstenungsund"
 drush dl drupal --drupal-project-rename=drupal
-cd drupal
+mkdir tcstenungsund
+sudo mv drupal/* tcstenungsund/
+cd tcstenungsund
 drush site-install --db-url=mysql://root:cisco@localhost:3360/tcstenungsund --site-name=Drupal8 --account-pass=abc123 -y
 # allow apache2 to write here
 chmod 755 sites/default/settings.php
 chmod 777 sites/default/files
 
-# adjust symlink for apache2
-rm -fdr /var/www/html
-ln -s /vagrant/drupal /var/www/html
+cd /var/www/html/
+sudo wget "https://github.com/tachnik/vagrant-easy-drupal8/raw/master/tcstenungsund.tar.gz"
+sudo drush archive-restore ./tcstenungsund.tar.gz --debug --overwrite --p --destination=/var/www/html/tcstenungsund
 
-#cd /var/www/html/tcstenungsund/themes/
-#git clone github.com/tachnik/Teknikcollege-Stenungsund
-#mv Teknikcollege-Stenungsund teknikcollege
+# adjust symlink for apache2
+rm -fdr /var/www/html/teknikcollege
+ln -s /vagrant/drupal /var/www/html/teknikcollege
