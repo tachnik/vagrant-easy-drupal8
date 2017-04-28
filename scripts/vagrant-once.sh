@@ -108,21 +108,25 @@ composer install
 
 
 # setup Drupal
-cd /var/www/html/
-# will download to directory "tcstenungsund"
+cd /vagrant
+# will download to directory "drupal"
 drush dl drupal --drupal-project-rename=drupal
-mkdir tcstenungsund
-sudo mv drupal/* tcstenungsund/
-cd tcstenungsund
+cd drupal
 drush site-install --db-url=mysql://root:cisco@localhost:3360/tcstenungsund --site-name=Drupal8 --account-pass=abc123 -y
 # allow apache2 to write here
 chmod 755 sites/default/settings.php
 chmod 777 sites/default/files
 
-cd /var/www/html/
-sudo wget "https://github.com/tachnik/vagrant-easy-drupal8/raw/master/tcstenungsund.tar.gz"
-sudo drush archive-restore ./tcstenungsund.tar.gz --debug --overwrite --p --destination=/var/www/html/tcstenungsund
-
 # adjust symlink for apache2
-rm -fdr /var/www/html/teknikcollege
-ln -s /vagrant/drupal /var/www/html/teknikcollege
+rm -fdr /var/www/html/tcstenungsund
+ln -s /vagrant/drupal /var/www/html/tcstenungsund
+
+cd /var/www/html/
+sudo apt-get update
+sudo apt-get install sshpass -y
+sudo sshpass -p 'cisco' scp -o StrictHostKeyChecking=no webb2@192.168.1.181:/var/www/html/tcstenungsund/tcstenungsund.tar.gz /var/www/html/tcstenungsund.tar.gz
+
+sudo drush archive-restore ./tcstenungsund.tar.gz --debug --overwrite --p --destination=/var/www/html/tcstenungsund
+cd tcstenungsund
+drush en devel -y
+drush cache-rebuild
