@@ -122,11 +122,14 @@ rm -fdr /var/www/html/tcstenungsund
 ln -s /vagrant/drupal /var/www/html/tcstenungsund
 
 cd /var/www/html/
+echo "Installs sshpass"
 sudo apt-get update
 sudo apt-get install sshpass -y
+echo "Downloading backup from server. May take a while..."
 sudo sshpass -p 'cisco' scp -o StrictHostKeyChecking=no webb2@192.168.1.181:/var/www/html/tcstenungsund/tcstenungsund.tar.gz /var/www/html/tcstenungsund.tar.gz
-
+echo "Running drush archive-restore"
 sudo drush archive-restore ./tcstenungsund.tar.gz --debug --overwrite --p --destination=/var/www/html/tcstenungsund
 cd tcstenungsund
 drush en devel -y
+echo "Rebuilds cache"
 drush cache-rebuild
