@@ -108,28 +108,38 @@ composer install
 
 
 # setup Drupal
-cd /vagrant
-# will download to directory "drupal"
-drush dl drupal --drupal-project-rename=drupal
-cd drupal
+mkdir /vagrant/drupal
+cd /vagrant/drupal
+
+echo "Removing old files"
+sudo rm /vagrant/drupal/* -rf
+
+echo "Downloading drupal..."
+drush dl drupal --drupal-project-rename=html
+
+echo "Installing drupal"
+cd html
 drush site-install --db-url=mysql://root:cisco@localhost:3360/tcstenungsund --site-name=Drupal8 --account-pass=abc123 -y
 # allow apache2 to write here
 chmod 755 sites/default/settings.php
 chmod 777 sites/default/files
 
-# adjust symlink for apache2
-rm -fdr /var/www/html/tcstenungsund
-ln -s /vagrant/drupal /var/www/html/tcstenungsund
-
-cd /var/www/html/
 echo "Installs sshpass"
 sudo apt-get update
 sudo apt-get install sshpass -y
+
 echo "Downloading backup from server. May take a while..."
-sudo sshpass -p 'cisco' scp -o StrictHostKeyChecking=no webb2@192.168.1.181:/var/www/html/tcstenungsund/tcstenungsund.tar.gz /var/www/html/tcstenungsund.tar.gz
+sudo sshpass -p 'cisco' scp -o StrictHostKeyChecking=no webb2@192.168.1.181:/var/www/html/tcstenungsund/tcstenungsund.tar.gz /var/www/tcstenungsund.tar.gz
+
 echo "Running drush archive-restore"
-sudo drush archive-restore ./tcstenungsund.tar.gz --debug --overwrite --p --destination=/var/www/html/tcstenungsund
-cd tcstenungsund
+cd /var/www
+sudo drush archive-restore ./tcstenungsund.tar.gz --debug --overwrite --p --destination=/vagrant/drupal/html
+
+echo "Updating settings"
+cd /vagrant/drupal/html
+sudo drush pm-update drupal -y
 drush en devel -y
-echo "Rebuilds cache"
-drush cache-rebuild
+
+# adjust symlink for apache2
+rm -fdr /var/www/html
+ln -s /vagrant/drupal/html /var/www/html
